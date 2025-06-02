@@ -1,12 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Users, Calendar, Activity, TrendingUp, Shield, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import UserManagement from '../admin/UserManagement';
+import AppointmentManager from '../appointments/AppointmentManager';
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
+  const [activeView, setActiveView] = useState<'dashboard' | 'users' | 'appointments'>('dashboard');
 
   const systemStats = [
     { label: 'Total Patients', value: '2,847', change: '+12%', icon: Users },
@@ -27,6 +30,40 @@ const AdminDashboard: React.FC = () => {
     { id: 2, type: 'Facility Access', name: 'Regional Medical Center', location: 'Downtown' },
     { id: 3, type: 'Data Export Request', name: 'Research Department', purpose: 'Clinical Study' },
   ];
+
+  if (activeView === 'users') {
+    return (
+      <div>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => setActiveView('dashboard')}
+            className="mb-4"
+          >
+            ← Back to Dashboard
+          </Button>
+        </div>
+        <UserManagement />
+      </div>
+    );
+  }
+
+  if (activeView === 'appointments') {
+    return (
+      <div>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => setActiveView('dashboard')}
+            className="mb-4"
+          >
+            ← Back to Dashboard
+          </Button>
+        </div>
+        <AppointmentManager />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -131,7 +168,10 @@ const AdminDashboard: React.FC = () => {
 
       {/* Admin Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Button className="h-16 flex items-center justify-center space-x-2 bg-purple-600 hover:bg-purple-700">
+        <Button 
+          className="h-16 flex items-center justify-center space-x-2 bg-purple-600 hover:bg-purple-700"
+          onClick={() => setActiveView('users')}
+        >
           <Users className="w-5 h-5" />
           <span>User Management</span>
         </Button>
@@ -139,7 +179,11 @@ const AdminDashboard: React.FC = () => {
           <Settings className="w-5 h-5" />
           <span>System Settings</span>
         </Button>
-        <Button variant="outline" className="h-16 flex items-center justify-center space-x-2">
+        <Button 
+          variant="outline" 
+          className="h-16 flex items-center justify-center space-x-2"
+          onClick={() => setActiveView('appointments')}
+        >
           <Activity className="w-5 h-5" />
           <span>Reports & Analytics</span>
         </Button>

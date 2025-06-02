@@ -1,12 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, Users, FileText, Activity, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import AppointmentManager from '../appointments/AppointmentManager';
+import MedicalRecords from '../medical/MedicalRecords';
 
 const DoctorDashboard: React.FC = () => {
   const { user } = useAuth();
+  const [activeView, setActiveView] = useState<'dashboard' | 'appointments' | 'records'>('dashboard');
 
   const todaysAppointments = [
     {
@@ -51,6 +54,40 @@ const DoctorDashboard: React.FC = () => {
     { label: 'This Week', value: '67', change: '+5' },
     { label: 'Patient Rating', value: '4.9', change: '+0.1' }
   ];
+
+  if (activeView === 'appointments') {
+    return (
+      <div>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => setActiveView('dashboard')}
+            className="mb-4"
+          >
+            ← Back to Dashboard
+          </Button>
+        </div>
+        <AppointmentManager />
+      </div>
+    );
+  }
+
+  if (activeView === 'records') {
+    return (
+      <div>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => setActiveView('dashboard')}
+            className="mb-4"
+          >
+            ← Back to Dashboard
+          </Button>
+        </div>
+        <MedicalRecords />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -125,7 +162,11 @@ const DoctorDashboard: React.FC = () => {
                 </div>
               ))}
             </div>
-            <Button variant="outline" className="w-full mt-4">
+            <Button 
+              variant="outline" 
+              className="w-full mt-4"
+              onClick={() => setActiveView('appointments')}
+            >
               View Full Schedule
             </Button>
           </CardContent>
@@ -170,7 +211,10 @@ const DoctorDashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Button className="h-16 flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700">
+        <Button 
+          className="h-16 flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700"
+          onClick={() => setActiveView('records')}
+        >
           <FileText className="w-5 h-5" />
           <span>Patient Records</span>
         </Button>
@@ -178,7 +222,11 @@ const DoctorDashboard: React.FC = () => {
           <Activity className="w-5 h-5" />
           <span>Lab Results</span>
         </Button>
-        <Button variant="outline" className="h-16 flex items-center justify-center space-x-2">
+        <Button 
+          variant="outline" 
+          className="h-16 flex items-center justify-center space-x-2"
+          onClick={() => setActiveView('appointments')}
+        >
           <Calendar className="w-5 h-5" />
           <span>Schedule Management</span>
         </Button>

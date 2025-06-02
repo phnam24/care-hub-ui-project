@@ -1,12 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, FileText, Heart, Plus, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import AppointmentManager from '../appointments/AppointmentManager';
+import MedicalRecords from '../medical/MedicalRecords';
 
 const PatientDashboard: React.FC = () => {
   const { user } = useAuth();
+  const [activeView, setActiveView] = useState<'dashboard' | 'appointments' | 'records'>('dashboard');
 
   const upcomingAppointments = [
     {
@@ -51,6 +54,40 @@ const PatientDashboard: React.FC = () => {
     { label: 'Temperature', value: '98.6', unit: '°F', status: 'normal' }
   ];
 
+  if (activeView === 'appointments') {
+    return (
+      <div>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => setActiveView('dashboard')}
+            className="mb-4"
+          >
+            ← Back to Dashboard
+          </Button>
+        </div>
+        <AppointmentManager />
+      </div>
+    );
+  }
+
+  if (activeView === 'records') {
+    return (
+      <div>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => setActiveView('dashboard')}
+            className="mb-4"
+          >
+            ← Back to Dashboard
+          </Button>
+        </div>
+        <MedicalRecords />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
@@ -65,11 +102,18 @@ const PatientDashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Button className="h-16 flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700">
+        <Button 
+          className="h-16 flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700"
+          onClick={() => setActiveView('appointments')}
+        >
           <Plus className="w-5 h-5" />
           <span>Book Appointment</span>
         </Button>
-        <Button variant="outline" className="h-16 flex items-center justify-center space-x-2">
+        <Button 
+          variant="outline" 
+          className="h-16 flex items-center justify-center space-x-2"
+          onClick={() => setActiveView('records')}
+        >
           <FileText className="w-5 h-5" />
           <span>View Records</span>
         </Button>
@@ -114,7 +158,11 @@ const PatientDashboard: React.FC = () => {
                 </div>
               ))}
             </div>
-            <Button variant="outline" className="w-full mt-4">
+            <Button 
+              variant="outline" 
+              className="w-full mt-4"
+              onClick={() => setActiveView('appointments')}
+            >
               View All Appointments
             </Button>
           </CardContent>
@@ -172,7 +220,11 @@ const PatientDashboard: React.FC = () => {
               </div>
             ))}
           </div>
-          <Button variant="outline" className="w-full mt-4">
+          <Button 
+            variant="outline" 
+            className="w-full mt-4"
+            onClick={() => setActiveView('records')}
+          >
             View All Records
           </Button>
         </CardContent>

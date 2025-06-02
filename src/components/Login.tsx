@@ -7,10 +7,12 @@ import { Card, CardHeader, CardContent, CardDescription, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Heart, Shield, Users } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import Register from './Register';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showRegister, setShowRegister] = useState(false);
   const { login, isLoading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,6 +32,10 @@ const Login: React.FC = () => {
       });
     }
   };
+
+  if (showRegister) {
+    return <Register onSwitchToLogin={() => setShowRegister(false)} />;
+  }
 
   const demoAccounts = [
     { type: 'Patient', email: 'patient@example.com', icon: Users },
@@ -116,8 +122,18 @@ const Login: React.FC = () => {
               </Button>
               
               <div className="text-center pt-4">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 mb-2">
                   Demo: Use any password with the emails above
+                </p>
+                <p className="text-sm text-gray-600">
+                  Don't have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => setShowRegister(true)}
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Sign up
+                  </button>
                 </p>
               </div>
             </form>
