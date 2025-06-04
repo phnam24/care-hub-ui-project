@@ -21,13 +21,13 @@ const Login: React.FC = () => {
     try {
       await login(email, password);
       toast({
-        title: "Login Successful",
-        description: "Welcome to CareHub!",
+        title: "Đăng nhập thành công",
+        description: "Chào mừng đến với CareHub!",
       });
     } catch (error) {
       toast({
-        title: "Login Failed",
-        description: "Please check your credentials and try again.",
+        title: "Đăng nhập thất bại",
+        description: "Vui lòng kiểm tra thông tin đăng nhập và thử lại.",
         variant: "destructive",
       });
     }
@@ -38,9 +38,9 @@ const Login: React.FC = () => {
   }
 
   const demoAccounts = [
-    { type: 'Patient', email: 'patient@example.com', icon: Users },
-    { type: 'Doctor', email: 'doctor@example.com', icon: Heart },
-    { type: 'Admin', email: 'admin@example.com', icon: Shield },
+    { type: 'Bệnh nhân', email: 'patient@example.com', icon: Users },
+    { type: 'Bác sĩ', email: 'doctor@example.com', icon: Heart },
+    { type: 'Quản trị', email: 'admin@example.com', icon: Shield },
   ];
 
   return (
@@ -56,12 +56,12 @@ const Login: React.FC = () => {
           </div>
           
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-            Your Health,
-            <span className="text-blue-600"> Connected</span>
+            Sức khỏe của bạn,
+            <span className="text-blue-600"> Kết nối</span>
           </h2>
           
           <p className="text-xl text-gray-600 leading-relaxed">
-            Access your medical records, schedule appointments, and connect with healthcare providers in one secure platform.
+            Truy cập hồ sơ y tế, đặt lịch khám và kết nối với các nhà cung cấp dịch vụ chăm sóc sức khỏe trong một nền tảng an toàn.
           </p>
 
           <div className="grid grid-cols-3 gap-4 pt-6">
@@ -79,9 +79,9 @@ const Login: React.FC = () => {
         {/* Right side - Login Form */}
         <Card className="w-full max-w-md mx-auto shadow-xl">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold">Sign in</CardTitle>
+            <CardTitle className="text-2xl font-bold">Đăng nhập</CardTitle>
             <CardDescription>
-              Enter your credentials to access your account
+              Nhập thông tin đăng nhập để truy cập tài khoản
             </CardDescription>
           </CardHeader>
           
@@ -101,11 +101,11 @@ const Login: React.FC = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Mật khẩu</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Nhập mật khẩu"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -118,21 +118,21 @@ const Login: React.FC = () => {
                 className="w-full h-11 healthcare-gradient text-white font-medium"
                 disabled={isLoading}
               >
-                {isLoading ? 'Signing in...' : 'Sign in'}
+                {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
               </Button>
               
               <div className="text-center pt-4">
                 <p className="text-sm text-gray-600 mb-2">
-                  Demo: Use any password with the emails above
+                  Demo: Sử dụng bất kỳ mật khẩu nào với các email ở trên
                 </p>
                 <p className="text-sm text-gray-600">
-                  Don't have an account?{' '}
+                  Chưa có tài khoản?{' '}
                   <button
                     type="button"
                     onClick={() => setShowRegister(true)}
                     className="text-blue-600 hover:underline font-medium"
                   >
-                    Sign up
+                    Đăng ký
                   </button>
                 </p>
               </div>

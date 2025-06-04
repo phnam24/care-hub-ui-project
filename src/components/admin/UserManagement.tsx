@@ -24,8 +24,8 @@ const UserManagement: React.FC = () => {
   const [users, setUsers] = useState<User[]>([
     {
       id: '1',
-      firstName: 'John',
-      lastName: 'Doe',
+      firstName: 'Văn A',
+      lastName: 'Nguyễn',
       email: 'john.doe@example.com',
       role: 'patient',
       status: 'active',
@@ -34,25 +34,25 @@ const UserManagement: React.FC = () => {
     },
     {
       id: '2',
-      firstName: 'Sarah',
-      lastName: 'Johnson',
+      firstName: 'Thị B',
+      lastName: 'Sarah',
       email: 'sarah.johnson@hospital.com',
       role: 'doctor',
       status: 'active',
       lastLogin: '2024-06-02',
       createdAt: '2024-02-10',
-      specialization: 'Cardiology'
+      specialization: 'Tim mạch'
     },
     {
       id: '3',
-      firstName: 'Michael',
-      lastName: 'Chen',
+      firstName: 'Văn C',
+      lastName: 'Michael',
       email: 'michael.chen@hospital.com',
       role: 'doctor',
       status: 'active',
       lastLogin: '2024-05-30',
       createdAt: '2024-03-05',
-      specialization: 'General Practice'
+      specialization: 'Đa khoa'
     }
   ]);
 
@@ -100,16 +100,16 @@ const UserManagement: React.FC = () => {
       user.id === userId ? { ...user, status: newStatus } : user
     ));
     toast({
-      title: "Status Updated",
-      description: `User status changed to ${newStatus}.`,
+      title: "Đã cập nhật trạng thái",
+      description: `Trạng thái người dùng đã được thay đổi thành ${newStatus === 'active' ? 'hoạt động' : newStatus === 'inactive' ? 'không hoạt động' : 'tạm ngừng'}.`,
     });
   };
 
   const handleDeleteUser = (userId: string) => {
     setUsers(prev => prev.filter(user => user.id !== userId));
     toast({
-      title: "User Deleted",
-      description: "User has been removed from the system.",
+      title: "Đã xóa người dùng",
+      description: "Người dùng đã được xóa khỏi hệ thống.",
       variant: "destructive",
     });
   };
@@ -117,10 +117,10 @@ const UserManagement: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">User Management</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Quản lý Người dùng</h2>
         <Button className="bg-blue-600 hover:bg-blue-700">
           <UserPlus className="w-4 h-4 mr-2" />
-          Add User
+          Thêm người dùng
         </Button>
       </div>
 
@@ -132,7 +132,7 @@ const UserManagement: React.FC = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
-                  placeholder="Search users by name or email..."
+                  placeholder="Tìm kiếm người dùng theo tên hoặc email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -145,10 +145,10 @@ const UserManagement: React.FC = () => {
                 onChange={(e) => setFilterRole(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md"
               >
-                <option value="all">All Roles</option>
-                <option value="patient">Patients</option>
-                <option value="doctor">Doctors</option>
-                <option value="admin">Administrators</option>
+                <option value="all">Tất cả vai trò</option>
+                <option value="patient">Bệnh nhân</option>
+                <option value="doctor">Bác sĩ</option>
+                <option value="admin">Quản trị viên</option>
               </select>
             </div>
           </div>
@@ -163,7 +163,7 @@ const UserManagement: React.FC = () => {
               <Users className="w-6 h-6 text-blue-600" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{users.length}</p>
-            <p className="text-sm text-gray-600">Total Users</p>
+            <p className="text-sm text-gray-600">Tổng người dùng</p>
           </CardContent>
         </Card>
         <Card>
@@ -174,7 +174,7 @@ const UserManagement: React.FC = () => {
             <p className="text-2xl font-bold text-gray-900">
               {users.filter(u => u.role === 'patient').length}
             </p>
-            <p className="text-sm text-gray-600">Patients</p>
+            <p className="text-sm text-gray-600">Bệnh nhân</p>
           </CardContent>
         </Card>
         <Card>
@@ -185,7 +185,7 @@ const UserManagement: React.FC = () => {
             <p className="text-2xl font-bold text-gray-900">
               {users.filter(u => u.role === 'doctor').length}
             </p>
-            <p className="text-sm text-gray-600">Doctors</p>
+            <p className="text-sm text-gray-600">Bác sĩ</p>
           </CardContent>
         </Card>
         <Card>
@@ -196,7 +196,7 @@ const UserManagement: React.FC = () => {
             <p className="text-2xl font-bold text-gray-900">
               {users.filter(u => u.status === 'active').length}
             </p>
-            <p className="text-sm text-gray-600">Active Users</p>
+            <p className="text-sm text-gray-600">Người dùng hoạt động</p>
           </CardContent>
         </Card>
       </div>
@@ -204,18 +204,18 @@ const UserManagement: React.FC = () => {
       {/* Users Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Users ({filteredUsers.length})</CardTitle>
+          <CardTitle>Người dùng ({filteredUsers.length})</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Last Login</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>Người dùng</TableHead>
+                <TableHead>Vai trò</TableHead>
+                <TableHead>Trạng thái</TableHead>
+                <TableHead>Đăng nhập lần cuối</TableHead>
+                <TableHead>Ngày tạo</TableHead>
+                <TableHead>Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -235,12 +235,14 @@ const UserManagement: React.FC = () => {
                   <TableCell>
                     <Badge className={`${getRoleColor(user.role)} flex items-center space-x-1 w-fit`}>
                       {getRoleIcon(user.role)}
-                      <span className="capitalize">{user.role}</span>
+                      <span className="capitalize">
+                        {user.role === 'patient' ? 'Bệnh nhân' : user.role === 'doctor' ? 'Bác sĩ' : 'Quản trị'}
+                      </span>
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(user.status)}>
-                      {user.status}
+                      {user.status === 'active' ? 'Hoạt động' : user.status === 'inactive' ? 'Không hoạt động' : 'Tạm ngừng'}
                     </Badge>
                   </TableCell>
                   <TableCell>{user.lastLogin}</TableCell>
@@ -255,9 +257,9 @@ const UserManagement: React.FC = () => {
                         onChange={(e) => handleStatusChange(user.id, e.target.value as User['status'])}
                         className="text-xs p-1 border rounded"
                       >
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="suspended">Suspended</option>
+                        <option value="active">Hoạt động</option>
+                        <option value="inactive">Không hoạt động</option>
+                        <option value="suspended">Tạm ngừng</option>
                       </select>
                       <Button
                         size="sm"

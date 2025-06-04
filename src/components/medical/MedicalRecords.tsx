@@ -27,23 +27,23 @@ const MedicalRecords: React.FC = () => {
   const [records, setRecords] = useState<MedicalRecord[]>([
     {
       id: '1',
-      patientName: 'John Doe',
-      doctorName: 'Dr. Sarah Johnson',
+      patientName: 'Nguyễn Văn A',
+      doctorName: 'BS. Sarah Johnson',
       date: '2024-06-01',
       type: 'diagnosis',
-      title: 'Hypertension Assessment',
-      description: 'Patient diagnosed with mild hypertension. Blood pressure readings consistently above 140/90.',
-      medications: ['Lisinopril 10mg daily', 'Hydrochlorothiazide 25mg daily']
+      title: 'Đánh giá Tăng huyết áp',
+      description: 'Bệnh nhân được chẩn đoán tăng huyết áp nhẹ. Các chỉ số huyết áp liên tục trên 140/90.',
+      medications: ['Lisinopril 10mg hàng ngày', 'Hydrochlorothiazide 25mg hàng ngày']
     },
     {
       id: '2',
-      patientName: 'Jane Smith',
-      doctorName: 'Dr. Michael Chen',
+      patientName: 'Trần Thị B',
+      doctorName: 'BS. Michael Chen',
       date: '2024-05-28',
       type: 'lab_result',
-      title: 'Blood Work Results',
-      description: 'Complete blood count and metabolic panel results within normal ranges.',
-      attachments: ['lab_results_052824.pdf']
+      title: 'Kết quả Xét nghiệm Máu',
+      description: 'Kết quả xét nghiệm máu toàn diện và bảng chuyển hóa trong phạm vi bình thường.',
+      attachments: ['ket_qua_xet_nghiem_052824.pdf']
     }
   ]);
 
@@ -57,11 +57,11 @@ const MedicalRecords: React.FC = () => {
   });
 
   const recordTypes = [
-    { value: 'diagnosis', label: 'Diagnosis' },
-    { value: 'prescription', label: 'Prescription' },
-    { value: 'lab_result', label: 'Lab Result' },
-    { value: 'imaging', label: 'Imaging' },
-    { value: 'notes', label: 'Clinical Notes' }
+    { value: 'diagnosis', label: 'Chẩn đoán' },
+    { value: 'prescription', label: 'Đơn thuốc' },
+    { value: 'lab_result', label: 'Kết quả xét nghiệm' },
+    { value: 'imaging', label: 'Chẩn đoán hình ảnh' },
+    { value: 'notes', label: 'Ghi chú lâm sàng' }
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -70,7 +70,7 @@ const MedicalRecords: React.FC = () => {
     const newRecord: MedicalRecord = {
       id: Date.now().toString(),
       patientName: formData.patientName,
-      doctorName: user?.firstName + ' ' + user?.lastName || 'Unknown Doctor',
+      doctorName: user?.firstName + ' ' + user?.lastName || 'Bác sĩ không xác định',
       date: new Date().toISOString().split('T')[0],
       type: formData.type,
       title: formData.title,
@@ -80,8 +80,8 @@ const MedicalRecords: React.FC = () => {
 
     setRecords(prev => [newRecord, ...prev]);
     toast({
-      title: "Record Added",
-      description: "Medical record has been successfully added.",
+      title: "Đã thêm hồ sơ",
+      description: "Hồ sơ y tế đã được thêm thành công.",
     });
 
     setFormData({
@@ -112,14 +112,14 @@ const MedicalRecords: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">Medical Records</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Hồ sơ Y tế</h2>
         {user?.role === 'doctor' && (
           <Button 
             onClick={() => setShowForm(true)}
             className="bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Record
+            Thêm hồ sơ
           </Button>
         )}
       </div>
@@ -127,13 +127,13 @@ const MedicalRecords: React.FC = () => {
       {showForm && (
         <Card>
           <CardHeader>
-            <CardTitle>Add Medical Record</CardTitle>
+            <CardTitle>Thêm Hồ sơ Y tế</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="patientName">Patient Name</Label>
+                  <Label htmlFor="patientName">Tên bệnh nhân</Label>
                   <Input
                     id="patientName"
                     value={formData.patientName}
@@ -142,7 +142,7 @@ const MedicalRecords: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="type">Record Type</Label>
+                  <Label htmlFor="type">Loại hồ sơ</Label>
                   <select
                     id="type"
                     value={formData.type}
@@ -158,7 +158,7 @@ const MedicalRecords: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="title">Tiêu đề</Label>
                 <Input
                   id="title"
                   value={formData.title}
@@ -168,7 +168,7 @@ const MedicalRecords: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">Mô tả</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
@@ -180,22 +180,22 @@ const MedicalRecords: React.FC = () => {
 
               {(formData.type === 'prescription' || formData.type === 'diagnosis') && (
                 <div className="space-y-2">
-                  <Label htmlFor="medications">Medications (comma-separated)</Label>
+                  <Label htmlFor="medications">Thuốc (phân cách bằng dấu phẩy)</Label>
                   <Input
                     id="medications"
                     value={formData.medications}
                     onChange={(e) => setFormData(prev => ({ ...prev, medications: e.target.value }))}
-                    placeholder="e.g., Lisinopril 10mg daily, Aspirin 81mg daily"
+                    placeholder="ví dụ: Lisinopril 10mg hàng ngày, Aspirin 81mg hàng ngày"
                   />
                 </div>
               )}
 
               <div className="flex space-x-2">
                 <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                  Add Record
+                  Thêm hồ sơ
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
-                  Cancel
+                  Hủy
                 </Button>
               </div>
             </form>
@@ -238,7 +238,7 @@ const MedicalRecords: React.FC = () => {
 
               {record.medications && record.medications.length > 0 && (
                 <div className="mb-4">
-                  <h4 className="font-medium text-gray-900 mb-2">Medications:</h4>
+                  <h4 className="font-medium text-gray-900 mb-2">Thuốc:</h4>
                   <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
                     {record.medications.map((medication, index) => (
                       <li key={index}>{medication}</li>
@@ -249,7 +249,7 @@ const MedicalRecords: React.FC = () => {
 
               {record.attachments && record.attachments.length > 0 && (
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Attachments:</h4>
+                  <h4 className="font-medium text-gray-900 mb-2">Tệp đính kèm:</h4>
                   <div className="flex space-x-2">
                     {record.attachments.map((attachment, index) => (
                       <Button key={index} size="sm" variant="outline">

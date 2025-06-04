@@ -14,44 +14,44 @@ const PatientDashboard: React.FC = () => {
   const upcomingAppointments = [
     {
       id: 1,
-      doctor: 'Dr. Sarah Johnson',
-      specialty: 'Cardiology',
+      doctor: 'BS. Sarah Johnson',
+      specialty: 'Tim mạch',
       date: '2024-06-10',
-      time: '10:00 AM',
-      type: 'Follow-up'
+      time: '10:00',
+      type: 'Tái khám'
     },
     {
       id: 2,
-      doctor: 'Dr. Michael Chen',
-      specialty: 'General Practice',
+      doctor: 'BS. Michael Chen',
+      specialty: 'Đa khoa',
       date: '2024-06-15',
-      time: '2:30 PM',
-      type: 'Annual Checkup'
+      time: '14:30',
+      type: 'Khám tổng quát hàng năm'
     }
   ];
 
   const recentRecords = [
     {
       id: 1,
-      type: 'Lab Results',
+      type: 'Kết quả xét nghiệm',
       date: '2024-06-01',
-      doctor: 'Dr. Sarah Johnson',
-      status: 'Normal'
+      doctor: 'BS. Sarah Johnson',
+      status: 'Bình thường'
     },
     {
       id: 2,
-      type: 'Prescription',
+      type: 'Đơn thuốc',
       date: '2024-05-28',
-      doctor: 'Dr. Michael Chen',
-      status: 'Active'
+      doctor: 'BS. Michael Chen',
+      status: 'Đang sử dụng'
     }
   ];
 
   const vitalStats = [
-    { label: 'Blood Pressure', value: '120/80', unit: 'mmHg', status: 'normal' },
-    { label: 'Heart Rate', value: '72', unit: 'bpm', status: 'normal' },
-    { label: 'Weight', value: '70', unit: 'kg', status: 'normal' },
-    { label: 'Temperature', value: '98.6', unit: '°F', status: 'normal' }
+    { label: 'Huyết áp', value: '120/80', unit: 'mmHg', status: 'normal' },
+    { label: 'Nhịp tim', value: '72', unit: 'bpm', status: 'normal' },
+    { label: 'Cân nặng', value: '70', unit: 'kg', status: 'normal' },
+    { label: 'Nhiệt độ', value: '37', unit: '°C', status: 'normal' }
   ];
 
   if (activeView === 'appointments') {
@@ -63,7 +63,7 @@ const PatientDashboard: React.FC = () => {
             onClick={() => setActiveView('dashboard')}
             className="mb-4"
           >
-            ← Back to Dashboard
+            ← Quay lại Trang chính
           </Button>
         </div>
         <AppointmentManager />
@@ -80,7 +80,7 @@ const PatientDashboard: React.FC = () => {
             onClick={() => setActiveView('dashboard')}
             className="mb-4"
           >
-            ← Back to Dashboard
+            ← Quay lại Trang chính
           </Button>
         </div>
         <MedicalRecords />
@@ -93,10 +93,10 @@ const PatientDashboard: React.FC = () => {
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">
-          Welcome back, {user?.firstName}!
+          Chào mừng trở lại, {user?.firstName}!
         </h1>
         <p className="text-blue-100">
-          Here's an overview of your health information and upcoming appointments.
+          Đây là tổng quan về thông tin sức khỏe và lịch hẹn sắp tới của bạn.
         </p>
       </div>
 
@@ -107,7 +107,7 @@ const PatientDashboard: React.FC = () => {
           onClick={() => setActiveView('appointments')}
         >
           <Plus className="w-5 h-5" />
-          <span>Book Appointment</span>
+          <span>Đặt lịch hẹn</span>
         </Button>
         <Button 
           variant="outline" 
@@ -115,11 +115,11 @@ const PatientDashboard: React.FC = () => {
           onClick={() => setActiveView('records')}
         >
           <FileText className="w-5 h-5" />
-          <span>View Records</span>
+          <span>Xem hồ sơ</span>
         </Button>
         <Button variant="outline" className="h-16 flex items-center justify-center space-x-2">
           <User className="w-5 h-5" />
-          <span>Update Profile</span>
+          <span>Cập nhật hồ sơ</span>
         </Button>
       </div>
 
@@ -131,7 +131,7 @@ const PatientDashboard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Calendar className="w-5 h-5 text-blue-600" />
-              <span>Upcoming Appointments</span>
+              <span>Lịch hẹn sắp tới</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -163,7 +163,7 @@ const PatientDashboard: React.FC = () => {
               className="w-full mt-4"
               onClick={() => setActiveView('appointments')}
             >
-              View All Appointments
+              Xem tất cả lịch hẹn
             </Button>
           </CardContent>
         </Card>
@@ -173,7 +173,7 @@ const PatientDashboard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Heart className="w-5 h-5 text-red-500" />
-              <span>Latest Vitals</span>
+              <span>Chỉ số sức khỏe mới nhất</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -182,7 +182,7 @@ const PatientDashboard: React.FC = () => {
                 <div key={index} className="flex justify-between items-center">
                   <div>
                     <p className="text-sm font-medium text-gray-900">{vital.label}</p>
-                    <p className="text-xs text-gray-500">Latest reading</p>
+                    <p className="text-xs text-gray-500">Đo gần nhất</p>
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-gray-900">
@@ -202,7 +202,7 @@ const PatientDashboard: React.FC = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <FileText className="w-5 h-5 text-green-600" />
-            <span>Recent Medical Records</span>
+            <span>Hồ sơ y tế gần đây</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -215,7 +215,7 @@ const PatientDashboard: React.FC = () => {
                     {record.status}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mb-1">By {record.doctor}</p>
+                <p className="text-sm text-gray-600 mb-1">Bởi {record.doctor}</p>
                 <p className="text-sm text-gray-500">{record.date}</p>
               </div>
             ))}
@@ -225,7 +225,7 @@ const PatientDashboard: React.FC = () => {
             className="w-full mt-4"
             onClick={() => setActiveView('records')}
           >
-            View All Records
+            Xem tất cả hồ sơ
           </Button>
         </CardContent>
       </Card>

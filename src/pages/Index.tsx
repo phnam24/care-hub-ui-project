@@ -15,7 +15,7 @@ const Index = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600">Đang tải...</p>
         </div>
       </div>
     );
@@ -34,7 +34,7 @@ const Index = () => {
       case 'admin':
         return <AdminDashboard />;
       default:
-        return <div>Unknown user role</div>;
+        return <div>Vai trò người dùng không xác định</div>;
     }
   };
 

@@ -25,20 +25,20 @@ const AppointmentManager: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([
     {
       id: '1',
-      patientName: 'John Doe',
-      doctorName: 'Dr. Sarah Johnson',
+      patientName: 'Nguyễn Văn A',
+      doctorName: 'BS. Sarah Johnson',
       date: '2024-06-10',
       time: '10:00',
-      type: 'Consultation',
+      type: 'Tư vấn',
       status: 'scheduled'
     },
     {
       id: '2',
-      patientName: 'Jane Smith',
-      doctorName: 'Dr. Michael Chen',
+      patientName: 'Trần Thị B',
+      doctorName: 'BS. Michael Chen',
       date: '2024-06-15',
       time: '14:30',
-      type: 'Follow-up',
+      type: 'Tái khám',
       status: 'scheduled'
     }
   ]);
@@ -55,12 +55,12 @@ const AppointmentManager: React.FC = () => {
   });
 
   const appointmentTypes = [
-    'Consultation',
-    'Follow-up',
-    'Check-up',
-    'Emergency',
-    'Surgery',
-    'Therapy'
+    'Tư vấn',
+    'Tái khám',
+    'Khám tổng quát',
+    'Cấp cứu',
+    'Phẫu thuật',
+    'Điều trị'
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -82,14 +82,14 @@ const AppointmentManager: React.FC = () => {
         apt.id === editingAppointment.id ? newAppointment : apt
       ));
       toast({
-        title: "Appointment Updated",
-        description: "The appointment has been successfully updated.",
+        title: "Đã cập nhật lịch hẹn",
+        description: "Lịch hẹn đã được cập nhật thành công.",
       });
     } else {
       setAppointments(prev => [...prev, newAppointment]);
       toast({
-        title: "Appointment Created",
-        description: "New appointment has been scheduled successfully.",
+        title: "Đã tạo lịch hẹn",
+        description: "Lịch hẹn mới đã được đặt thành công.",
       });
     }
 
@@ -125,8 +125,8 @@ const AppointmentManager: React.FC = () => {
   const handleDelete = (appointmentId: string) => {
     setAppointments(prev => prev.filter(apt => apt.id !== appointmentId));
     toast({
-      title: "Appointment Cancelled",
-      description: "The appointment has been cancelled.",
+      title: "Đã hủy lịch hẹn",
+      description: "Lịch hẹn đã được hủy.",
       variant: "destructive",
     });
   };
@@ -135,22 +135,23 @@ const AppointmentManager: React.FC = () => {
     setAppointments(prev => prev.map(apt => 
       apt.id === appointmentId ? { ...apt, status } : apt
     ));
+    const statusText = status === 'completed' ? 'hoàn thành' : status === 'cancelled' ? 'đã hủy' : 'đã lên lịch';
     toast({
-      title: "Status Updated",
-      description: `Appointment marked as ${status}.`,
+      title: "Đã cập nhật trạng thái",
+      description: `Lịch hẹn được đánh dấu là ${statusText}.`,
     });
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">Appointment Management</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Quản lý Lịch hẹn</h2>
         <Button 
           onClick={() => setShowForm(true)}
           className="bg-blue-600 hover:bg-blue-700"
         >
           <Plus className="w-4 h-4 mr-2" />
-          New Appointment
+          Lịch hẹn mới
         </Button>
       </div>
 
@@ -158,14 +159,14 @@ const AppointmentManager: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>
-              {editingAppointment ? 'Edit Appointment' : 'Schedule New Appointment'}
+              {editingAppointment ? 'Chỉnh sửa Lịch hẹn' : 'Đặt Lịch hẹn Mới'}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="patientName">Patient Name</Label>
+                  <Label htmlFor="patientName">Tên bệnh nhân</Label>
                   <Input
                     id="patientName"
                     value={formData.patientName}
@@ -174,7 +175,7 @@ const AppointmentManager: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="doctorName">Doctor Name</Label>
+                  <Label htmlFor="doctorName">Tên bác sĩ</Label>
                   <Input
                     id="doctorName"
                     value={formData.doctorName}
@@ -186,7 +187,7 @@ const AppointmentManager: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="date">Date</Label>
+                  <Label htmlFor="date">Ngày</Label>
                   <Input
                     id="date"
                     type="date"
@@ -196,7 +197,7 @@ const AppointmentManager: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="time">Time</Label>
+                  <Label htmlFor="time">Giờ</Label>
                   <Input
                     id="time"
                     type="time"
@@ -206,10 +207,10 @@ const AppointmentManager: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="type">Type</Label>
+                  <Label htmlFor="type">Loại</Label>
                   <Select value={formData.type} onValueChange={(value) => setFormData(prev => ({ ...prev, type: value }))}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
+                      <SelectValue placeholder="Chọn loại" />
                     </SelectTrigger>
                     <SelectContent>
                       {appointmentTypes.map(type => (
@@ -221,21 +222,21 @@ const AppointmentManager: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="notes">Notes (Optional)</Label>
+                <Label htmlFor="notes">Ghi chú (Tùy chọn)</Label>
                 <Input
                   id="notes"
                   value={formData.notes}
                   onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                  placeholder="Additional notes about the appointment"
+                  placeholder="Ghi chú bổ sung về lịch hẹn"
                 />
               </div>
 
               <div className="flex space-x-2">
                 <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                  {editingAppointment ? 'Update' : 'Schedule'} Appointment
+                  {editingAppointment ? 'Cập nhật' : 'Đặt lịch'} hẹn
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
+                  Hủy
                 </Button>
               </div>
             </form>
@@ -278,7 +279,8 @@ const AppointmentManager: React.FC = () => {
                       ? 'bg-green-100 text-green-800'
                       : 'bg-red-100 text-red-800'
                   }`}>
-                    {appointment.status}
+                    {appointment.status === 'scheduled' ? 'Đã lên lịch' : 
+                     appointment.status === 'completed' ? 'Hoàn thành' : 'Đã hủy'}
                   </span>
                   
                   <div className="flex space-x-1">
@@ -308,14 +310,14 @@ const AppointmentManager: React.FC = () => {
                     onClick={() => updateStatus(appointment.id, 'completed')}
                     className="bg-green-600 hover:bg-green-700"
                   >
-                    Mark Completed
+                    Đánh dấu Hoàn thành
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => updateStatus(appointment.id, 'cancelled')}
                   >
-                    Cancel
+                    Hủy
                   </Button>
                 </div>
               )}

@@ -12,23 +12,23 @@ const AdminDashboard: React.FC = () => {
   const [activeView, setActiveView] = useState<'dashboard' | 'users' | 'appointments'>('dashboard');
 
   const systemStats = [
-    { label: 'Total Patients', value: '2,847', change: '+12%', icon: Users },
-    { label: 'Active Doctors', value: '156', change: '+3%', icon: Activity },
-    { label: 'Today\'s Appointments', value: '324', change: '+8%', icon: Calendar },
-    { label: 'System Uptime', value: '99.9%', change: '+0.1%', icon: TrendingUp }
+    { label: 'Tổng bệnh nhân', value: '2,847', change: '+12%', icon: Users },
+    { label: 'Bác sĩ đang hoạt động', value: '156', change: '+3%', icon: Activity },
+    { label: 'Lịch hẹn hôm nay', value: '324', change: '+8%', icon: Calendar },
+    { label: 'Thời gian hoạt động hệ thống', value: '99.9%', change: '+0.1%', icon: TrendingUp }
   ];
 
   const recentActivities = [
-    { id: 1, action: 'New doctor registered', user: 'Dr. Sarah Wilson', time: '10 minutes ago' },
-    { id: 2, action: 'Patient record updated', user: 'John Doe', time: '25 minutes ago' },
-    { id: 3, action: 'System backup completed', user: 'System', time: '1 hour ago' },
-    { id: 4, action: 'New appointment scheduled', user: 'Jane Smith', time: '2 hours ago' },
+    { id: 1, action: 'Bác sĩ mới đăng ký', user: 'BS. Sarah Wilson', time: '10 phút trước' },
+    { id: 2, action: 'Hồ sơ bệnh nhân được cập nhật', user: 'Nguyễn Văn A', time: '25 phút trước' },
+    { id: 3, action: 'Sao lưu hệ thống hoàn tất', user: 'Hệ thống', time: '1 giờ trước' },
+    { id: 4, action: 'Lịch hẹn mới được đặt', user: 'Trần Thị B', time: '2 giờ trước' },
   ];
 
   const pendingApprovals = [
-    { id: 1, type: 'Doctor Registration', name: 'Dr. Michael Brown', specialty: 'Cardiology' },
-    { id: 2, type: 'Facility Access', name: 'Regional Medical Center', location: 'Downtown' },
-    { id: 3, type: 'Data Export Request', name: 'Research Department', purpose: 'Clinical Study' },
+    { id: 1, type: 'Đăng ký Bác sĩ', name: 'BS. Michael Brown', specialty: 'Tim mạch' },
+    { id: 2, type: 'Truy cập Cơ sở', name: 'Trung tâm Y tế Khu vực', location: 'Trung tâm thành phố' },
+    { id: 3, type: 'Yêu cầu Xuất dữ liệu', name: 'Phòng Nghiên cứu', purpose: 'Nghiên cứu Lâm sàng' },
   ];
 
   if (activeView === 'users') {
@@ -40,7 +40,7 @@ const AdminDashboard: React.FC = () => {
             onClick={() => setActiveView('dashboard')}
             className="mb-4"
           >
-            ← Back to Dashboard
+            ← Quay lại Trang chính
           </Button>
         </div>
         <UserManagement />
@@ -57,7 +57,7 @@ const AdminDashboard: React.FC = () => {
             onClick={() => setActiveView('dashboard')}
             className="mb-4"
           >
-            ← Back to Dashboard
+            ← Quay lại Trang chính
           </Button>
         </div>
         <AppointmentManager />
@@ -70,10 +70,10 @@ const AdminDashboard: React.FC = () => {
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">
-          System Overview
+          Tổng quan Hệ thống
         </h1>
         <p className="text-purple-100">
-          Welcome back, {user?.firstName}. Here's what's happening in your healthcare system today.
+          Chào mừng trở lại, {user?.firstName}. Đây là tình hình của hệ thống chăm sóc sức khỏe hôm nay.
         </p>
       </div>
 
@@ -105,7 +105,7 @@ const AdminDashboard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Activity className="w-5 h-5 text-blue-600" />
-              <span>Recent System Activities</span>
+              <span>Hoạt động Hệ thống Gần đây</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -122,7 +122,7 @@ const AdminDashboard: React.FC = () => {
               ))}
             </div>
             <Button variant="outline" className="w-full mt-4">
-              View Activity Log
+              Xem Nhật ký Hoạt động
             </Button>
           </CardContent>
         </Card>
@@ -132,7 +132,7 @@ const AdminDashboard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Shield className="w-5 h-5 text-orange-500" />
-              <span>Pending Approvals</span>
+              <span>Chờ Phê duyệt</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -150,17 +150,17 @@ const AdminDashboard: React.FC = () => {
                   </div>
                   <div className="flex space-x-2 mt-3">
                     <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                      Approve
+                      Phê duyệt
                     </Button>
                     <Button size="sm" variant="outline">
-                      Review
+                      Xem xét
                     </Button>
                   </div>
                 </div>
               ))}
             </div>
             <Button variant="outline" className="w-full mt-4">
-              View All Approvals
+              Xem Tất cả Phê duyệt
             </Button>
           </CardContent>
         </Card>
@@ -173,11 +173,11 @@ const AdminDashboard: React.FC = () => {
           onClick={() => setActiveView('users')}
         >
           <Users className="w-5 h-5" />
-          <span>User Management</span>
+          <span>Quản lý Người dùng</span>
         </Button>
         <Button variant="outline" className="h-16 flex items-center justify-center space-x-2">
           <Settings className="w-5 h-5" />
-          <span>System Settings</span>
+          <span>Cài đặt Hệ thống</span>
         </Button>
         <Button 
           variant="outline" 
@@ -185,7 +185,7 @@ const AdminDashboard: React.FC = () => {
           onClick={() => setActiveView('appointments')}
         >
           <Activity className="w-5 h-5" />
-          <span>Reports & Analytics</span>
+          <span>Báo cáo & Phân tích</span>
         </Button>
       </div>
     </div>

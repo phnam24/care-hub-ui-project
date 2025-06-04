@@ -14,45 +14,45 @@ const DoctorDashboard: React.FC = () => {
   const todaysAppointments = [
     {
       id: 1,
-      patient: 'John Doe',
-      time: '9:00 AM',
-      type: 'Follow-up',
+      patient: 'Nguyễn Văn A',
+      time: '9:00',
+      type: 'Tái khám',
       status: 'confirmed'
     },
     {
       id: 2,
-      patient: 'Jane Smith',
-      time: '10:30 AM',
-      type: 'Consultation',
+      patient: 'Trần Thị B',
+      time: '10:30',
+      type: 'Tư vấn',
       status: 'confirmed'
     },
     {
       id: 3,
-      patient: 'Robert Johnson',
-      time: '2:00 PM',
-      type: 'Check-up',
+      patient: 'Lê Văn C',
+      time: '14:00',
+      type: 'Khám tổng quát',
       status: 'pending'
     },
     {
       id: 4,
-      patient: 'Maria Garcia',
-      time: '3:30 PM',
-      type: 'Follow-up',
+      patient: 'Phạm Thị D',
+      time: '15:30',
+      type: 'Tái khám',
       status: 'confirmed'
     }
   ];
 
   const pendingTasks = [
-    { id: 1, task: 'Review lab results for John Doe', priority: 'high' },
-    { id: 2, task: 'Complete discharge summary for Jane Smith', priority: 'medium' },
-    { id: 3, task: 'Update prescription for Robert Johnson', priority: 'low' },
+    { id: 1, task: 'Xem kết quả xét nghiệm của Nguyễn Văn A', priority: 'high' },
+    { id: 2, task: 'Hoàn thành tóm tắt xuất viện cho Trần Thị B', priority: 'medium' },
+    { id: 3, task: 'Cập nhật đơn thuốc cho Lê Văn C', priority: 'low' },
   ];
 
   const stats = [
-    { label: 'Today\'s Patients', value: '12', change: '+2' },
-    { label: 'Pending Reviews', value: '8', change: '-1' },
-    { label: 'This Week', value: '67', change: '+5' },
-    { label: 'Patient Rating', value: '4.9', change: '+0.1' }
+    { label: 'Bệnh nhân hôm nay', value: '12', change: '+2' },
+    { label: 'Chờ xem xét', value: '8', change: '-1' },
+    { label: 'Tuần này', value: '67', change: '+5' },
+    { label: 'Đánh giá bệnh nhân', value: '4.9', change: '+0.1' }
   ];
 
   if (activeView === 'appointments') {
@@ -64,7 +64,7 @@ const DoctorDashboard: React.FC = () => {
             onClick={() => setActiveView('dashboard')}
             className="mb-4"
           >
-            ← Back to Dashboard
+            ← Quay lại Trang chính
           </Button>
         </div>
         <AppointmentManager />
@@ -81,7 +81,7 @@ const DoctorDashboard: React.FC = () => {
             onClick={() => setActiveView('dashboard')}
             className="mb-4"
           >
-            ← Back to Dashboard
+            ← Quay lại Trang chính
           </Button>
         </div>
         <MedicalRecords />
@@ -94,10 +94,10 @@ const DoctorDashboard: React.FC = () => {
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">
-          Good morning, {user?.firstName}!
+          Chào buổi sáng, BS. {user?.firstName}!
         </h1>
         <p className="text-green-100">
-          You have 12 patients scheduled for today. Your next appointment is at 9:00 AM.
+          Bạn có 12 bệnh nhân đã đặt lịch hôm nay. Cuộc hẹn tiếp theo là lúc 9:00 sáng.
         </p>
       </div>
 
@@ -128,7 +128,7 @@ const DoctorDashboard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Calendar className="w-5 h-5 text-blue-600" />
-              <span>Today's Schedule</span>
+              <span>Lịch hôm nay</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -155,7 +155,7 @@ const DoctorDashboard: React.FC = () => {
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-yellow-100 text-yellow-800'
                       }`}>
-                        {appointment.status}
+                        {appointment.status === 'confirmed' ? 'Đã xác nhận' : 'Chờ xác nhận'}
                       </span>
                     </div>
                   </div>
@@ -167,7 +167,7 @@ const DoctorDashboard: React.FC = () => {
               className="w-full mt-4"
               onClick={() => setActiveView('appointments')}
             >
-              View Full Schedule
+              Xem lịch đầy đủ
             </Button>
           </CardContent>
         </Card>
@@ -177,7 +177,7 @@ const DoctorDashboard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <AlertCircle className="w-5 h-5 text-orange-500" />
-              <span>Pending Tasks</span>
+              <span>Công việc chờ xử lý</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -193,17 +193,17 @@ const DoctorDashboard: React.FC = () => {
                         ? 'bg-yellow-100 text-yellow-800'
                         : 'bg-gray-100 text-gray-800'
                     }`}>
-                      {task.priority} priority
+                      {task.priority === 'high' ? 'Ưu tiên cao' : task.priority === 'medium' ? 'Ưu tiên trung bình' : 'Ưu tiên thấp'}
                     </span>
                     <Button size="sm" variant="ghost">
-                      Complete
+                      Hoàn thành
                     </Button>
                   </div>
                 </div>
               ))}
             </div>
             <Button variant="outline" className="w-full mt-4">
-              View All Tasks
+              Xem tất cả công việc
             </Button>
           </CardContent>
         </Card>
@@ -216,11 +216,11 @@ const DoctorDashboard: React.FC = () => {
           onClick={() => setActiveView('records')}
         >
           <FileText className="w-5 h-5" />
-          <span>Patient Records</span>
+          <span>Hồ sơ bệnh nhân</span>
         </Button>
         <Button variant="outline" className="h-16 flex items-center justify-center space-x-2">
           <Activity className="w-5 h-5" />
-          <span>Lab Results</span>
+          <span>Kết quả xét nghiệm</span>
         </Button>
         <Button 
           variant="outline" 
@@ -228,7 +228,7 @@ const DoctorDashboard: React.FC = () => {
           onClick={() => setActiveView('appointments')}
         >
           <Calendar className="w-5 h-5" />
-          <span>Schedule Management</span>
+          <span>Quản lý lịch hẹn</span>
         </Button>
       </div>
     </div>

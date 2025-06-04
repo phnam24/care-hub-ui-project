@@ -40,8 +40,8 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
     
     if (formData.password !== formData.confirmPassword) {
       toast({
-        title: "Password Mismatch",
-        description: "Passwords do not match",
+        title: "Mật khẩu không khớp",
+        description: "Mật khẩu xác nhận không khớp",
         variant: "destructive",
       });
       return;
@@ -54,15 +54,15 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast({
-        title: "Registration Successful",
-        description: "Please check your email for verification",
+        title: "Đăng ký thành công",
+        description: "Vui lòng kiểm tra email để xác minh tài khoản",
       });
       
       onSwitchToLogin();
     } catch (error) {
       toast({
-        title: "Registration Failed",
-        description: "Please try again later",
+        title: "Đăng ký thất bại",
+        description: "Vui lòng thử lại sau",
         variant: "destructive",
       });
     } finally {
@@ -84,9 +84,9 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
             </div>
             <span className="text-2xl font-bold text-gray-900">CareHub</span>
           </div>
-          <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
+          <CardTitle className="text-2xl font-bold">Tạo tài khoản</CardTitle>
           <CardDescription>
-            Join our healthcare platform
+            Tham gia nền tảng chăm sóc sức khỏe của chúng tôi
           </CardDescription>
         </CardHeader>
         
@@ -94,7 +94,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+                <Label htmlFor="firstName">Tên</Label>
                 <Input
                   id="firstName"
                   value={formData.firstName}
@@ -103,7 +103,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="lastName">Họ</Label>
                 <Input
                   id="lastName"
                   value={formData.lastName}
@@ -125,7 +125,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone">Số điện thoại</Label>
               <Input
                 id="phone"
                 type="tel"
@@ -136,33 +136,33 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
+              <Label htmlFor="role">Vai trò</Label>
               <Select value={formData.role} onValueChange={(value) => handleInputChange('role', value)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="patient">Patient</SelectItem>
-                  <SelectItem value="doctor">Doctor</SelectItem>
+                  <SelectItem value="patient">Bệnh nhân</SelectItem>
+                  <SelectItem value="doctor">Bác sĩ</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {formData.role === 'doctor' && (
               <div className="space-y-2">
-                <Label htmlFor="specialization">Specialization</Label>
+                <Label htmlFor="specialization">Chuyên khoa</Label>
                 <Input
                   id="specialization"
                   value={formData.specialization || ''}
                   onChange={(e) => handleInputChange('specialization', e.target.value)}
-                  placeholder="e.g., Cardiology, Pediatrics"
+                  placeholder="ví dụ: Tim mạch, Nhi khoa"
                   required
                 />
               </div>
             )}
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Mật khẩu</Label>
               <Input
                 id="password"
                 type="password"
@@ -173,7 +173,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -188,18 +188,18 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
               className="w-full h-11 healthcare-gradient text-white font-medium"
               disabled={isLoading}
             >
-              {isLoading ? 'Creating Account...' : 'Create Account'}
+              {isLoading ? 'Đang tạo tài khoản...' : 'Tạo tài khoản'}
             </Button>
             
             <div className="text-center pt-4">
               <p className="text-sm text-gray-600">
-                Already have an account?{' '}
+                Đã có tài khoản?{' '}
                 <button
                   type="button"
                   onClick={onSwitchToLogin}
                   className="text-blue-600 hover:underline font-medium"
                 >
-                  Sign in
+                  Đăng nhập
                 </button>
               </p>
             </div>
