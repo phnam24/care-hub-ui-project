@@ -1,55 +1,53 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, FileText, Heart, Plus, User } from 'lucide-react';
+import { Calendar, Clock, FileText, Heart, Plus, User, MessageSquare } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import AppointmentManager from '../appointments/AppointmentManager';
 import MedicalRecords from '../medical/MedicalRecords';
+import ChatBot from '../chat/ChatBot';
 import apiService from '@/services/apiService';
 
 const PatientDashboard: React.FC = () => {
   const { user } = useAuth();
-  const [activeView, setActiveView] = useState<'dashboard' | 'appointments' | 'records'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'appointments' | 'records' | 'chat'>('dashboard');
 
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
 
-useEffect(() => {
-  const fetchAppointments = async () => {
-    try {
-      const response = await apiService.getMyAppointments(user.role);
-      const rawAppointments = response.data;
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await apiService.getMyAppointments(user.role);
+        const rawAppointments = response.data;
 
-      const formatted = await Promise.all(
-        rawAppointments
-          .filter((appt: any) => {
-            const isConfirmed = appt.status === "confirmed";
-            const isFuture = new Date(appt.scheduled_time) > new Date();
-            return isConfirmed && isFuture;
-          })
-          .map(async (appt: any) => {
-            return {
-              id: appt.id,
-              doctor: `BS. ${appt.doctor_name}`,
-              reason: appt.reason || "Khám bệnh",
-              type: appt.type || "Khám tổng quát",
-              date: appt.scheduled_time.split("T")[0],
-              time: appt.scheduled_time.split("T")[1].slice(0, 5),
-              status: appt.status,
-            };
-          })
-      );
+        const formatted = await Promise.all(
+          rawAppointments
+            .filter((appt: any) => {
+              const isConfirmed = appt.status === "confirmed";
+              const isFuture = new Date(appt.scheduled_time) > new Date();
+              return isConfirmed && isFuture;
+            })
+            .map(async (appt: any) => {
+              return {
+                id: appt.id,
+                doctor: `BS. ${appt.doctor_name}`,
+                reason: appt.reason || "Khám bệnh",
+                type: appt.type || "Khám tổng quát",
+                date: appt.scheduled_time.split("T")[0],
+                time: appt.scheduled_time.split("T")[1].slice(0, 5),
+                status: appt.status,
+              };
+            })
+        );
 
+        setUpcomingAppointments(formatted);
+      } catch (error) {
+        console.error('Failed to fetch appointments:', error);
+      }
+    };
 
-
-      setUpcomingAppointments(formatted);
-    } catch (error) {
-      console.error('Failed to fetch appointments:', error);
-    }
-  };
-
-  fetchAppointments();
-}, []);
+    fetchAppointments();
+  }, []);
 
   const recentRecords = [
     {
@@ -109,6 +107,23 @@ useEffect(() => {
     );
   }
 
+  if (activeView === 'chat') {
+    return (
+      <div>
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => setActiveView('dashboard')}
+            className="mb-4"
+          >
+            ← Quay lại Trang chính
+          </Button>
+        </div>
+        <ChatBot />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
@@ -122,7 +137,7 @@ useEffect(() => {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Button 
           className="h-16 flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700"
           onClick={() => setActiveView('appointments')}
@@ -137,6 +152,14 @@ useEffect(() => {
         >
           <FileText className="w-5 h-5" />
           <span>Xem hồ sơ</span>
+        </Button>
+        <Button 
+          variant="outline" 
+          className="h-16 flex items-center justify-center space-x-2 bg-blue-50 hover:bg-blue-100 border-blue-200"
+          onClick={() => setActiveView('chat')}
+        >
+          <MessageSquare className="w-5 h-5 text-blue-600" />
+          <span className="text-blue-600">Tư vấn AI</span>
         </Button>
         <Button variant="outline" className="h-16 flex items-center justify-center space-x-2">
           <User className="w-5 h-5" />
