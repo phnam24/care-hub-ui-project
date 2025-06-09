@@ -39,7 +39,7 @@ const Navigation: React.FC = () => {
               <>
                 <div className="text-right hidden sm:block">
                   <p className="text-sm font-medium text-gray-900">
-                    {user.firstName} {user.lastName}
+                    {user.first_name} {user.last_name}
                   </p>
                   <p className={`text-xs capitalize ${getRoleColor(user.role)}`}>
                     {user.role}
@@ -51,7 +51,7 @@ const Navigation: React.FC = () => {
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                       <Avatar className="h-10 w-10">
                         <AvatarFallback className="bg-blue-100 text-blue-600">
-                          {getInitials(user.firstName, user.lastName)}
+                          {getInitials(user.first_name, user.last_name)}
                         </AvatarFallback>
                       </Avatar>
                     </Button>

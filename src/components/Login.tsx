@@ -10,7 +10,7 @@ import { toast } from '@/hooks/use-toast';
 import Register from './Register';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showRegister, setShowRegister] = useState(false);
   const { login, isLoading } = useAuth();
@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     
     try {
-      await login(email, password);
+      await login(username, password);
       toast({
         title: "Đăng nhập thành công",
         description: "Chào mừng đến với CareHub!",
@@ -38,9 +38,9 @@ const Login: React.FC = () => {
   }
 
   const demoAccounts = [
-    { type: 'Bệnh nhân', email: 'patient@example.com', icon: Users },
-    { type: 'Bác sĩ', email: 'doctor@example.com', icon: Heart },
-    { type: 'Quản trị', email: 'admin@example.com', icon: Shield },
+    { type: 'Bệnh nhân', email: 'john_doe', password: "Patient@123",icon: Users },
+    { type: 'Bác sĩ', email: 'drhouse', password: "Doctor@123",icon: Heart },
+    { type: 'Quản trị', email: 'admin1', password: "Admin@123", icon: Shield },
   ];
 
   return (
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
           
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
             Sức khỏe của bạn,
-            <span className="text-blue-600"> Kết nối</span>
+            <span className="text-blue-600"> Là trách nhiệm của chúng tôi</span>
           </h2>
           
           <p className="text-xl text-gray-600 leading-relaxed">
@@ -67,7 +67,14 @@ const Login: React.FC = () => {
           <div className="grid grid-cols-3 gap-4 pt-6">
             {demoAccounts.map((account) => (
               <Card key={account.type} className="p-4 text-center hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => setEmail(account.email)}>
+                    onClick={() => {
+                      setUsername(account.email);
+                      setPassword(account.password);
+                      toast({
+                        title: "Thông tin đăng nhập demo",
+                        description: `Tài khoản: ${account.email}, Mật khẩu: ${account.password}`,
+                      });
+                    }}>
                 <account.icon className="w-8 h-8 text-blue-600 mx-auto mb-2" />
                 <p className="font-medium text-sm">{account.type}</p>
                 <p className="text-xs text-gray-500">Demo</p>
@@ -88,13 +95,12 @@ const Login: React.FC = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="username">Tài khoản</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="doctor@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="username"
+                  placeholder="patient"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                   className="h-11"
                 />

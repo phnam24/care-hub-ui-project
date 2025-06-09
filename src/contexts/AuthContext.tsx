@@ -1,16 +1,19 @@
 
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-
+import apiService from '@/services/apiService';
 export type UserRole = 'patient' | 'doctor' | 'admin';
 
+
 export interface User {
-  id: string;
+  id: number;
+  username: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  role: UserRole;
-  avatar?: string;
+  first_name: string;
+  last_name: string;
+  role: 'patient' | 'doctor' | 'admin';
+  phone_number: string | null;
 }
+
 
 interface AuthState {
   user: User | null;
@@ -57,7 +60,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 };
 
 interface AuthContextType extends AuthState {
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -83,52 +86,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     dispatch({ type: 'SET_LOADING', payload: false });
   }, []);
 
-  const login = async (email: string, password: string) => {
-    dispatch({ type: 'LOGIN_START' });
-    
-    try {
-      // Mock API call - replace with actual API Gateway call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock user data based on email for demo
-      let mockUser: User;
-      if (email.includes('doctor')) {
-        mockUser = {
-          id: '2',
-          email,
-          firstName: 'Dr. Sarah',
-          lastName: 'Johnson',
-          role: 'doctor',
-        };
-      } else if (email.includes('admin')) {
-        mockUser = {
-          id: '3',
-          email,
-          firstName: 'Admin',
-          lastName: 'User',
-          role: 'admin',
-        };
-      } else {
-        mockUser = {
-          id: '1',
-          email,
-          firstName: 'John',
-          lastName: 'Doe',
-          role: 'patient',
-        };
-      }
-      
-      const mockToken = 'mock-jwt-token-' + Date.now();
-      
-      localStorage.setItem('healthcareToken', mockToken);
-      localStorage.setItem('healthcareUser', JSON.stringify(mockUser));
-      
-      dispatch({ type: 'LOGIN_SUCCESS', payload: { user: mockUser, token: mockToken } });
-    } catch (error) {
-      dispatch({ type: 'LOGIN_FAILURE' });
-      throw error;
-    }
-  };
+const login = async (username: string, password: string) => {
+  dispatch({ type: 'LOGIN_START' });
+
+  try {
+    // Step 1: Authenticate and get tokens
+    const loginResponse = await apiService.login(username, password);
+    const { access, refresh } = loginResponse.data;
+
+    // Step 2: Store tokens
+    localStorage.setItem('healthcareToken', access);
+    localStorage.setItem('healthcareRefreshToken', refresh);
+
+    // Step 3: Fetch user profile using access token
+    const profileResponse = await apiService.getProfile();
+    const user = profileResponse.data;
+
+    // Step 4: Store user info
+    localStorage.setItem('healthcareUser', JSON.stringify(user));
+
+    // Step 5: Dispatch success
+    dispatch({ type: 'LOGIN_SUCCESS', payload: { user, token: access } });
+  } catch (error) {
+    dispatch({ type: 'LOGIN_FAILURE' });
+    throw error;
+  }
+};
+
 
   const logout = () => {
     localStorage.removeItem('healthcareToken');

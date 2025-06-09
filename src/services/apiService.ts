@@ -1,10 +1,63 @@
 
-const API_GATEWAY_URL = 'http://localhost:8000/api'; // Replace with your actual API Gateway URL
+const API_GATEWAY_URL = 'http://localhost'; // Replace with your actual API Gateway URL
 
 interface ApiResponse<T> {
   data: T;
   message?: string;
   status: number;
+}
+
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: 'patient' | 'doctor' | 'admin';
+  phone_number: string | null;
+}
+
+interface Doctor {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
+
+interface RegisterPayload {
+  username: string;
+  email: string;
+  password: string;
+  password2: string;
+  first_name: string;
+  last_name: string;
+  role: 'patient' | 'doctor' | 'admin';
+}
+
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: 'patient' | 'doctor' | 'admin';
+  phone_number: string | null;
+}
+
+interface LoginResponse {
+  access: string;
+  refresh: string;
+}
+
+interface Appointment {
+  id: number;
+  patient_id: number;
+  doctor_id: number;
+  doctor_name: string;
+  scheduled_time: string;
+  reason: string;
+  status: 'pending' | 'confirmed' | 'cancelled';
+  created_at: string;
+  updated_at: string;
 }
 
 class ApiService {
@@ -52,15 +105,28 @@ class ApiService {
   }
 
   // Auth Service endpoints
-  async login(email: string, password: string) {
-    return this.request('/auth/login', {
+  async login(username: string, password: string): Promise<ApiResponse<LoginResponse>> {
+    return this.request<LoginResponse>('/auth/api/login/', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, password }),
+    });
+  }
+
+  async register(payload: RegisterPayload): Promise<ApiResponse<User>> {
+  return this.request<User>('/auth/api/register/', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+  async getProfile(): Promise<ApiResponse<User>> {
+    return this.request<User>('/auth/api/me/', {
+      method: 'GET',
     });
   }
 
   async refreshToken(refreshToken: string) {
-    return this.request('/auth/refresh', {
+    return this.request('/auth/token/refresh/', {
       method: 'POST',
       body: JSON.stringify({ refresh_token: refreshToken }),
     });
@@ -68,7 +134,7 @@ class ApiService {
 
   // Patient Service endpoints
   async getPatientProfile(patientId: string) {
-    return this.request(`/patients/${patientId}`);
+    return this.request(`/patients/api/${patientId}`);
   }
 
   async updatePatientProfile(patientId: string, data: any) {
@@ -92,31 +158,34 @@ class ApiService {
     return this.request(`/doctors/${doctorId}/schedule${queryParam}`);
   }
 
-  async getAllDoctors() {
-    return this.request('/doctors');
+  async getAllDoctors(): Promise<ApiResponse<Doctor[]>> {
+    return this.request('/auth/api/users/doctors/');
   }
 
   // Appointment Service endpoints
-  async getAppointments(userId: string, userType: 'patient' | 'doctor') {
-    return this.request(`/appointments?${userType}_id=${userId}`);
+  async getMyAppointments(role: string): Promise<ApiResponse<Appointment[]>> {
+    if (role === 'patient') {
+      return this.request<Appointment[]>('/patients/api/appointments/');
+    }
+    return this.request(`/appointments/api/appointments/doctor/`);
   }
 
   async createAppointment(appointmentData: any) {
-    return this.request('/appointments', {
+    return this.request('/patients/api/book-appointment/', {
       method: 'POST',
       body: JSON.stringify(appointmentData),
     });
   }
 
   async updateAppointment(appointmentId: string, data: any) {
-    return this.request(`/appointments/${appointmentId}`, {
+    return this.request(`/appointments/api/appointments/${appointmentId}/`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async cancelAppointment(appointmentId: string) {
-    return this.request(`/appointments/${appointmentId}`, {
+    return this.request(`/appointments/${appointmentId}/`, {
       method: 'DELETE',
     });
   }

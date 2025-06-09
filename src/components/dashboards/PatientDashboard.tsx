@@ -1,34 +1,55 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, FileText, Heart, Plus, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import AppointmentManager from '../appointments/AppointmentManager';
 import MedicalRecords from '../medical/MedicalRecords';
+import apiService from '@/services/apiService';
 
 const PatientDashboard: React.FC = () => {
   const { user } = useAuth();
   const [activeView, setActiveView] = useState<'dashboard' | 'appointments' | 'records'>('dashboard');
 
-  const upcomingAppointments = [
-    {
-      id: 1,
-      doctor: 'BS. Sarah Johnson',
-      specialty: 'Tim mạch',
-      date: '2024-06-10',
-      time: '10:00',
-      type: 'Tái khám'
-    },
-    {
-      id: 2,
-      doctor: 'BS. Michael Chen',
-      specialty: 'Đa khoa',
-      date: '2024-06-15',
-      time: '14:30',
-      type: 'Khám tổng quát hàng năm'
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+
+useEffect(() => {
+  const fetchAppointments = async () => {
+    try {
+      const response = await apiService.getMyAppointments(user.role);
+      const rawAppointments = response.data;
+
+      const formatted = await Promise.all(
+        rawAppointments
+          .filter((appt: any) => {
+            const isConfirmed = appt.status === "confirmed";
+            const isFuture = new Date(appt.scheduled_time) > new Date();
+            return isConfirmed && isFuture;
+          })
+          .map(async (appt: any) => {
+            return {
+              id: appt.id,
+              doctor: `BS. ${appt.doctor_name}`,
+              reason: appt.reason || "Khám bệnh",
+              type: appt.type || "Khám tổng quát",
+              date: appt.scheduled_time.split("T")[0],
+              time: appt.scheduled_time.split("T")[1].slice(0, 5),
+              status: appt.status,
+            };
+          })
+      );
+
+
+
+      setUpcomingAppointments(formatted);
+    } catch (error) {
+      console.error('Failed to fetch appointments:', error);
     }
-  ];
+  };
+
+  fetchAppointments();
+}, []);
 
   const recentRecords = [
     {
@@ -93,7 +114,7 @@ const PatientDashboard: React.FC = () => {
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">
-          Chào mừng trở lại, {user?.firstName}!
+          Chào mừng trở lại, {user?.last_name}!
         </h1>
         <p className="text-blue-100">
           Đây là tổng quan về thông tin sức khỏe và lịch hẹn sắp tới của bạn.
@@ -136,7 +157,7 @@ const PatientDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {upcomingAppointments.map((appointment) => (
+              {upcomingAppointments.slice(0, 3).map((appointment) => (
                 <div key={appointment.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -144,8 +165,8 @@ const PatientDashboard: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="font-medium text-gray-900">{appointment.doctor}</h3>
-                      <p className="text-sm text-gray-600">{appointment.specialty}</p>
-                      <p className="text-sm text-gray-500">{appointment.type}</p>
+                      <p className="text-sm text-gray-600">{appointment.type}</p>
+                      <p className="text-blue-800">{appointment.reason}</p>
                     </div>
                   </div>
                   <div className="text-right">

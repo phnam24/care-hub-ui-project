@@ -70,7 +70,7 @@ const MedicalRecords: React.FC = () => {
     const newRecord: MedicalRecord = {
       id: Date.now().toString(),
       patientName: formData.patientName,
-      doctorName: user?.firstName + ' ' + user?.lastName || 'Bác sĩ không xác định',
+      doctorName: user?.first_name + ' ' + user?.last_name || 'Bác sĩ không xác định',
       date: new Date().toISOString().split('T')[0],
       type: formData.type,
       title: formData.title,

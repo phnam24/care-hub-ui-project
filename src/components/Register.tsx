@@ -7,16 +7,16 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Heart } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import apiService from '@/services/apiService';
 
 interface RegisterFormData {
+  username: string; // Optional for future use
   email: string;
   password: string;
-  confirmPassword: string;
-  firstName: string;
-  lastName: string;
+  password2: string;
+  first_name: string;
+  last_name: string;
   role: 'patient' | 'doctor';
-  specialization?: string;
-  phone: string;
 }
 
 interface RegisterProps {
@@ -25,20 +25,20 @@ interface RegisterProps {
 
 const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
   const [formData, setFormData] = useState<RegisterFormData>({
+    username: '', // Optional field for future use
     email: '',
     password: '',
-    confirmPassword: '',
-    firstName: '',
-    lastName: '',
+    password2: '',
+    first_name: '',
+    last_name: '',
     role: 'patient',
-    phone: '',
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.password2) {
       toast({
         title: "Mật khẩu không khớp",
         description: "Mật khẩu xác nhận không khớp",
@@ -52,10 +52,11 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
     try {
       // Mock registration - replace with actual API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      console.log(formData)
+      await apiService.register(formData);
       toast({
         title: "Đăng ký thành công",
-        description: "Vui lòng kiểm tra email để xác minh tài khoản",
+        description: "Vui lòng kiểm đăng nhập để tiếp tục",
       });
       
       onSwitchToLogin();
@@ -94,23 +95,33 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">Tên</Label>
+                <Label htmlFor="first_name">Tên</Label>
                 <Input
-                  id="firstName"
-                  value={formData.firstName}
-                  onChange={(e) => handleInputChange('firstName', e.target.value)}
+                  id="first_name"
+                  value={formData.first_name}
+                  onChange={(e) => handleInputChange('first_name', e.target.value)}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Họ</Label>
+                <Label htmlFor="last_name">Họ</Label>
                 <Input
-                  id="lastName"
-                  value={formData.lastName}
-                  onChange={(e) => handleInputChange('lastName', e.target.value)}
+                  id="last_name"
+                  value={formData.last_name}
+                  onChange={(e) => handleInputChange('last_name', e.target.value)}
                   required
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="username">Tên đăng nhập</Label>
+              <Input
+                id="username"
+                value={formData.username}
+                onChange={(e) => handleInputChange('username', e.target.value)}
+                required
+              />
             </div>
             
             <div className="space-y-2">
@@ -120,17 +131,6 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="phone">Số điện thoại</Label>
-              <Input
-                id="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
                 required
               />
             </div>
@@ -147,19 +147,6 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
                 </SelectContent>
               </Select>
             </div>
-
-            {formData.role === 'doctor' && (
-              <div className="space-y-2">
-                <Label htmlFor="specialization">Chuyên khoa</Label>
-                <Input
-                  id="specialization"
-                  value={formData.specialization || ''}
-                  onChange={(e) => handleInputChange('specialization', e.target.value)}
-                  placeholder="ví dụ: Tim mạch, Nhi khoa"
-                  required
-                />
-              </div>
-            )}
             
             <div className="space-y-2">
               <Label htmlFor="password">Mật khẩu</Label>
@@ -173,12 +160,12 @@ const Register: React.FC<RegisterProps> = ({ onSwitchToLogin }) => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+              <Label htmlFor="password2">Xác nhận mật khẩu</Label>
               <Input
-                id="confirmPassword"
+                id="password2"
                 type="password"
-                value={formData.confirmPassword}
-                onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                value={formData.password2}
+                onChange={(e) => handleInputChange('password2', e.target.value)}
                 required
               />
             </div>
