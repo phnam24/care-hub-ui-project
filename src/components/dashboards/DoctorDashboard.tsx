@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -94,7 +93,7 @@ const DoctorDashboard: React.FC = () => {
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">
-          Chào buổi sáng, BS. {user?.firstName}!
+          Chào buổi sáng, BS. {user?.first_name}!
         </h1>
         <p className="text-green-100">
           Bạn có 12 bệnh nhân đã đặt lịch hôm nay. Cuộc hẹn tiếp theo là lúc 9:00 sáng.

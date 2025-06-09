@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -73,7 +72,7 @@ const AdminDashboard: React.FC = () => {
           Tổng quan Hệ thống
         </h1>
         <p className="text-purple-100">
-          Chào mừng trở lại, {user?.firstName}. Đây là tình hình của hệ thống chăm sóc sức khỏe hôm nay.
+          Chào mừng trở lại, {user?.first_name}. Đây là tình hình của hệ thống chăm sóc sức khỏe hôm nay.
         </p>
       </div>
 
